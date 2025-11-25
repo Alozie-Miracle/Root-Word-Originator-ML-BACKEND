@@ -10,7 +10,7 @@ from nltk.tokenize import word_tokenize
 # Download required NLTK data
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger_eng')
-nltk.download('punkt_tab')
+
 
 lemmatizer = WordNetLemmatizer()
 
