@@ -1,29 +1,12 @@
 import os
-import nltk
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from model import RootRequest
+import nltk
+nltk.download("wordnet")
+nltk.download("omw-1.4")
+
 from nltk.stem import WordNetLemmatizer
-from nltk.corpus import wordnet
-
-# === VERCEL-FRIENDLY NLTK SETUP ===
-# Use a local folder for NLTK data included in your deployment
-NLTK_DATA_DIR = os.path.join(os.path.dirname(__file__), "nltk_data")
-nltk.data.path.append(NLTK_DATA_DIR)
-
-# Download required NLTK data locally (do this on your machine, not runtime)
-
-# Use a folder in your project
-# NLTK_DIR = "./nltk_data"
-
-# Download required data
-# nltk.download('wordnet', download_dir=NLTK_DIR)
-# nltk.download('averaged_perceptron_tagger', download_dir=NLTK_DIR)
-# nltk.download('punkt', download_dir=NLTK_DIR)       # still needed for tokenizer base
-# nltk.download('punkt_tab', download_dir=NLTK_DIR)   # specifically for 'punkt_tab'
-
-
-lemmatizer = WordNetLemmatizer()
 
 # === FASTAPI APP ===
 app = FastAPI(title="Root Word Generator", version="1.0.0")
@@ -41,37 +24,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+lemmatizer = WordNetLemmatizer()
 
 # === HELPER FUNCTIONS ===
-def get_wordnet_pos(treebank_tag):
-    if treebank_tag.startswith("J"):
-        return wordnet.ADJ
-    elif treebank_tag.startswith("V"):
-        return wordnet.VERB
-    elif treebank_tag.startswith("N"):
-        return wordnet.NOUN
-    elif treebank_tag.startswith("R"):
-        return wordnet.ADV
-    else:
-        return wordnet.NOUN
+def simple_pos(word):
+    if word.endswith("ing"):
+        return "VERB"
+    if word.endswith("ed"):
+        return "VERB"
+    if word.endswith("s"):
+        return "NOUN"
+    return "NOUN"
+
+
 
 def root_word(text):
-    text = text.lower().strip()
     tokens = text.split()
-    pos_tags = nltk.pos_tag(tokens)
 
     results = []
-    for token, pos in pos_tags:
-        wn_pos = get_wordnet_pos(pos)
-        lemma = lemmatizer.lemmatize(token, wn_pos)
+    for w in tokens:
+        pos = simple_pos(w)
+        lemma = lemmatizer.lemmatize(w.lower())
+
         results.append({
-            "word": token,
+            "word": w,
+            "root_word": lemma,
             "part_of_speech": pos,
-            "root_word": lemma
         })
 
-    return {"original_text": text, "results": results}
+    return {
+        "original_text": text,
+        "results": results,
+    }
 
 # === API ENDPOINTS ===
 @app.post("/root")
