@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from model import RootRequest
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
-from nltk.tokenize import word_tokenize
 
 # === VERCEL-FRIENDLY NLTK SETUP ===
 # Use a local folder for NLTK data included in your deployment
@@ -59,7 +58,7 @@ def get_wordnet_pos(treebank_tag):
 
 def root_word(text):
     text = text.lower().strip()
-    tokens = word_tokenize(text)
+    tokens = text.split()
     pos_tags = nltk.pos_tag(tokens)
 
     results = []
