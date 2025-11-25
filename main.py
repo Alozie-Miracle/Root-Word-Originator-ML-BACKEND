@@ -24,8 +24,8 @@ app = FastAPI(title="Root Word Generator", version="1.0.0")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://root-word-originator-ml.vercel.app"],
-    allow_methods=["GET","POST","OPTIONS"],
+    allow_origins=["*"],
+    allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,
 )
