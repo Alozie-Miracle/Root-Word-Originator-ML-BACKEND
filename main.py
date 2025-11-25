@@ -21,14 +21,20 @@ lemmatizer = WordNetLemmatizer()
 # === FASTAPI APP ===
 app = FastAPI(title="Root Word Generator", version="1.0.0")
 
+origins = [
+    "https://root-word-originator-ml.vercel.app"
+]
+
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    allow_credentials=True,
 )
+
+
 
 # === HELPER FUNCTIONS ===
 def get_wordnet_pos(treebank_tag):
