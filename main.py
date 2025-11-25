@@ -13,9 +13,16 @@ NLTK_DATA_DIR = os.path.join(os.path.dirname(__file__), "nltk_data")
 nltk.data.path.append(NLTK_DATA_DIR)
 
 # Download required NLTK data locally (do this on your machine, not runtime)
-# nltk.download('wordnet', download_dir="nltk_data")
-# nltk.download('averaged_perceptron_tagger', download_dir="nltk_data")
-# nltk.download('punkt_tab', download_dir="./api/nltk_data")
+
+# Use a folder in your project
+# NLTK_DIR = "./nltk_data"
+
+# Download required data
+# nltk.download('wordnet', download_dir=NLTK_DIR)
+# nltk.download('averaged_perceptron_tagger', download_dir=NLTK_DIR)
+# nltk.download('punkt', download_dir=NLTK_DIR)       # still needed for tokenizer base
+# nltk.download('punkt_tab', download_dir=NLTK_DIR)   # specifically for 'punkt_tab'
+
 
 lemmatizer = WordNetLemmatizer()
 
