@@ -29,7 +29,7 @@ lemmatizer = WordNetLemmatizer()
 app = FastAPI(title="Root Word Generator", version="1.0.0")
 
 origins = [
-    "https://root-word-originator-ml.vercel.app"
+    "*"
 ]
 
 # CORS middleware
@@ -70,9 +70,6 @@ def root_word(text):
             "part_of_speech": pos,
             "root_word": lemma
         })
-
-    if len(results) == 1:
-        return results[0]
 
     return {"original_text": text, "results": results}
 
