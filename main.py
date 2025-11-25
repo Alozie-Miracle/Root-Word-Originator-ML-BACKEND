@@ -15,6 +15,7 @@ nltk.data.path.append(NLTK_DATA_DIR)
 # Download required NLTK data locally (do this on your machine, not runtime)
 # nltk.download('wordnet', download_dir="nltk_data")
 # nltk.download('averaged_perceptron_tagger', download_dir="nltk_data")
+# nltk.download('punkt_tab', download_dir="./api/nltk_data")
 
 lemmatizer = WordNetLemmatizer()
 
